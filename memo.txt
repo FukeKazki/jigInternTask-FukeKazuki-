@@ -1,0 +1,13 @@
+"event_name":"イベント名称",
+"description":"内容",
+"remarks":"備考",
+"category":"ジャンル名",
+"start_date":"開催日開始",
+"end_date":"開催日終了",
+"contact":"問い合わせ先",
+"contact_phone_number":"電話番号",
+"event_place":"開催地",
+"event_place_url":"開催地URL",
+"address":"住所",
+"mail_address":"メールアドレス",
+"transportation":"交通手段"
