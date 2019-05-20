@@ -11,3 +11,17 @@
 "address":"住所",
 "mail_address":"メールアドレス",
 "transportation":"交通手段"
+
+"event_name":"写真展「写真で巡る　福井県指定文化財　〜平成の指定品から〜」",
+"description":"福井県指定文化財の中から、特に平成に入って指定されたもの２６点を写真で紹介します。",
+"remarks":"",
+"category":"歴史",
+"start_date":"2019/2/28",
+"end_date":"2019/5/19",
+"contact":"福井県立歴史博物館",
+"contact_phone_number":"0776-22-4675",
+"event_place":"福井県立歴史博物館",
+"event_place_url":"http://www.pref.fukui.jp/muse/Cul-Hist/index.html",
+"address":"大宮2丁目19-15",
+"mail_address":"",
+"transportation":""
