@@ -25,3 +25,9 @@
 "address":"大宮2丁目19-15",
 "mail_address":"",
 "transportation":""
+
+data-keyにインデックス番号を指定する
+data-keyをローカルストレージに保存
+遷移先でローカルストレージからdata-keyを取得
+ajaxでjsonを取得
+jsonのdata-key番目を表示
