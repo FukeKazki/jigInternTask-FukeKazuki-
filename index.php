@@ -41,10 +41,13 @@
                 <option value="10">10件表示</option>
                 <option value="20">20件表示</option>
                 <option value="30">30件表示</option>
-                <option value="99">全件表示</option>
+                <option value="9999">全件表示</option>
             </select>
         </div>
         <div class="events">
+        </div>
+        <div class="show-more">
+            <button>もっと見る</button>
         </div>
     </div>
 </main>

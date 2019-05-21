@@ -1,3 +1,55 @@
+'use strict';
+let end = 10;
+let tmp = [];
+//表示件数までエレメントの生成をする
+const showItems = (items, end = items.length) => {
+    let events = '';
+    items.map((item, i) => {
+        if(i === 0 || i > end) return;
+        events += `
+            <li>
+                <div>
+                    ${item.start_date}
+                    ${item.event_name}
+                    ${item.category}
+                    ${item.contact}
+                </div>
+            </li>`;
+    });
+    return events;
+};
+//もっと見るを表示するかどうか
+const showMore = (length) => {
+    if(end < length) {
+        showButton.style.display = 'block';
+    } else {
+        showButton.style.display = 'none';
+    }
+};
+//もっと見るがクリックされたとき
+const onClickMore = () => {
+    end += 10;
+    const eventName = showItems(tmp, end);
+    document.querySelector('.events').innerHTML = eventName;
+    showMore(tmp.length);
+    console.log(end);
+};
+const showButton = document.querySelector('.show-more button');
+showButton.addEventListener('click', onClickMore);
+
+//表示件数が変更されたとき
+const changeShowNumber = () => {
+    end = Number(selectItem.value);
+    const eventName = showItems(tmp, end);
+    document.querySelector('.events').innerHTML = eventName;
+    showMore(tmp.length);
+    console.log(end);
+};
+const selectItem = document.querySelector('#showItems');
+selectItem.addEventListener('change', changeShowNumber);
+
+
+// jQuery
 $(function(){
    'use strict';
    $('.hero-img').vegas({
@@ -13,24 +65,12 @@ $(function(){
       animation: 'random',
    });
    const url = 'https://raw.githubusercontent.com/jigjp/intern_exam/master/fukui_event.json';
-   let tmp;
+   //jsonの取得
    $.getJSON(url, datas => {
-      let eventName = '';
       tmp = datas;
-      datas.map((data, i) => {
-         if(i >= 10 || i === 0) return;
-         eventName += `
-            <li>
-                <div>
-                    ${data.start_date}
-                    ${data.event_name}
-                    ${data.category}
-                    ${data.contact}
-                </div>
-            </li>
-           `;
-      });
+      const eventName = showItems(datas, end);
       document.querySelector('.events').innerHTML = eventName;
       console.log(tmp);
+      showMore(datas.length);
    });
 });
