@@ -3,12 +3,13 @@
 
 ## 開発環境
 ### 言語
-- **PHP**
 - **JavaScript**
 - **HTML**
 - **CSS**
 ### フレームワーク
 - **jQuery**
+    - vegas
+    - slick
 ### エディタ
 - **PhpStorm**
 
