@@ -1,0 +1,20 @@
+.hero-img {
+  height: 100vh;
+  margin: 1em;
+  padding: 0;
+  background-size: cover;
+  background-position: center;
+  .hero-mask {
+    background-color: rgba(255, 255, 255, 0.3);
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .hero-title {
+    font-weight: bold;
+    font-size: 4em;
+    color: #fff;
+  }
+}
