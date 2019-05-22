@@ -1,6 +1,7 @@
 'use strict';
 let end = 10;
 let tmp = [];
+let categorys = [];
 //表示件数までエレメントの生成をする
 const showItems = (items, end = items.length) => {
     let events = '';
@@ -47,8 +48,16 @@ const changeShowNumber = () => {
 };
 const selectItem = document.querySelector('#showItems');
 selectItem.addEventListener('change', changeShowNumber);
-
-
+const selectCategory = document.querySelector('#selectCategory');
+const showCategory = () => {
+    let element = '';
+    categorys.map((category, i) => {
+        if(i === 0) return;
+        element += `<option value="${category}">${category}</option>`;
+    });
+    return element;
+};
+// selectCategory.innerHTML = showCategory();
 // jQuery
 $(function(){
    'use strict';
@@ -72,5 +81,13 @@ $(function(){
       document.querySelector('.events').innerHTML = eventName;
       console.log(tmp);
       showMore(datas.length);
+      //カテゴリの取得
+       datas.map(data => {
+           // if(data.category === 'その他')
+          categorys.push(data.category);
+       });
+       categorys = categorys.filter((x, i, self) => self.indexOf(x) === i);
+       console.log(categorys);
+       selectCategory.innerHTML = showCategory();
    });
 });

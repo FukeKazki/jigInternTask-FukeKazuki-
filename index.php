@@ -31,10 +31,10 @@
             <input type="text" value="キーワード">
             <button>検索</button>
             <h3>カテゴリ検索</h3>
-            <select name="" id="">
-                <option value="cal">カテゴリ1</option>
-                <option value="cal">カテゴリ2</option>
-                <option value="cal">カテゴリ3</option>
+            <select name="" id="selectCategory">
+<!--                <option value="cal">カテゴリ1</option>-->
+<!--                <option value="cal">カテゴリ2</option>-->
+<!--                <option value="cal">カテゴリ3</option>-->
             </select>
             <h3>表示検索</h3>
             <select name="showItems" id="showItems">
