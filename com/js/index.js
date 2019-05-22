@@ -1,24 +1,32 @@
 'use strict';
+//表示数の初期状態
 let end = 10;
+
 let tmp = [];
+let isCategory = false;
 let categorys = [];
+let newArray = [];
+
 //表示件数までエレメントの生成をする
-const showItems = (items, end = items.length) => {
+const showItems = (items, end = items.length, flag = true) => {
     let events = '';
     items.map((item, i) => {
-        if(i === 0 || i > end) return;
+        if(flag) if(i === 0) return;
+        if(i > end) return;
         events += `
             <li>
                 <div>
-                    ${item.start_date}
-                    ${item.event_name}
-                    ${item.category}
-                    ${item.contact}
+                    <p>${i}</p>
+                    <time>${item.start_date}</time>
+                    <p>${item.event_name}</p>
+                    <span>${item.category}</span>
+                    <p>${item.contact}</p>
                 </div>
             </li>`;
     });
     return events;
 };
+
 //もっと見るを表示するかどうか
 const showMore = (length) => {
     if(end < length) {
@@ -30,34 +38,71 @@ const showMore = (length) => {
 //もっと見るがクリックされたとき
 const onClickMore = () => {
     end += 10;
-    const eventName = showItems(tmp, end);
-    document.querySelector('.events').innerHTML = eventName;
-    showMore(tmp.length);
+    if(isCategory) {
+        document.querySelector('.events').innerHTML = showItems(newArray, end);
+        showMore(newArray.length);
+    } else {
+        document.querySelector('.events').innerHTML = showItems(tmp, end);
+        showMore(tmp.length);
+    }
     console.log(end);
 };
-const showButton = document.querySelector('.show-more button');
-showButton.addEventListener('click', onClickMore);
+
 
 //表示件数が変更されたとき
 const changeShowNumber = () => {
     end = Number(selectItem.value);
-    const eventName = showItems(tmp, end);
-    document.querySelector('.events').innerHTML = eventName;
-    showMore(tmp.length);
+    if(isCategory) {
+        document.querySelector('.events').innerHTML = showItems(newArray, end, false);
+        showMore(end);
+    } else {
+        document.querySelector('.events').innerHTML = showItems(tmp, end);
+        showMore(tmp.length);
+    }
     console.log(end);
 };
-const selectItem = document.querySelector('#showItems');
-selectItem.addEventListener('change', changeShowNumber);
-const selectCategory = document.querySelector('#selectCategory');
+
+
+//カテゴリ一覧の作成
 const showCategory = () => {
     let element = '';
     categorys.map((category, i) => {
-        if(i === 0) return;
+        if(i === 0) {
+            element += `<option value="noSelect">全てのカテゴリ</option>`;
+            return;
+        }
         element += `<option value="${category}">${category}</option>`;
     });
     return element;
 };
-// selectCategory.innerHTML = showCategory();
+
+const selectCategory = document.querySelector('#selectCategory');
+//カテゴリを変更したとき
+selectCategory.addEventListener('change', () => {
+   const value = selectCategory.value;
+   if(value === 'noSelect') {
+       document.querySelector('.events').innerHTML = showItems(tmp, end);
+       isCategory = false;
+       return;
+   }
+   isCategory = true;
+   newArray = tmp.filter((event) => {
+       return event.category === value;
+   });
+   console.log(newArray);
+   // end = newArray.length;
+   end = 9;
+   document.querySelector('.events').innerHTML = showItems(newArray, end, false);
+   showMore(newArray.length);
+});
+
+const showButton = document.querySelector('.show-more button');
+showButton.addEventListener('click', onClickMore);
+
+const selectItem = document.querySelector('#showItems');
+selectItem.addEventListener('change', changeShowNumber);
+
+
 // jQuery
 $(function(){
    'use strict';
@@ -73,17 +118,16 @@ $(function(){
       transition: 'blur',
       animation: 'random',
    });
+
    const url = 'https://raw.githubusercontent.com/jigjp/intern_exam/master/fukui_event.json';
    //jsonの取得
    $.getJSON(url, datas => {
       tmp = datas;
-      const eventName = showItems(datas, end);
-      document.querySelector('.events').innerHTML = eventName;
+      document.querySelector('.events').innerHTML = showItems(datas, end);
       console.log(tmp);
       showMore(datas.length);
       //カテゴリの取得
        datas.map(data => {
-           // if(data.category === 'その他')
           categorys.push(data.category);
        });
        categorys = categorys.filter((x, i, self) => self.indexOf(x) === i);
