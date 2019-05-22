@@ -27,15 +27,15 @@
             calendar
         </div>
         <div class="forms">
+
             <h3>キーワード検索</h3>
-            <input type="text" value="キーワード">
-            <button>検索</button>
+            <input type="text" value="キーワード" class="keyword">
+            <button class="keywordButton">検索</button>
+
             <h3>カテゴリ検索</h3>
             <select name="" id="selectCategory">
-<!--                <option value="cal">カテゴリ1</option>-->
-<!--                <option value="cal">カテゴリ2</option>-->
-<!--                <option value="cal">カテゴリ3</option>-->
             </select>
+
             <h3>表示検索</h3>
             <select name="showItems" id="showItems">
                 <option value="10">10件表示</option>
@@ -43,12 +43,16 @@
                 <option value="30">30件表示</option>
                 <option value="9999">全件表示</option>
             </select>
+
         </div>
+
         <div class="events">
         </div>
+
         <div class="show-more">
             <button>もっと見る</button>
         </div>
+
     </div>
 </main>
 <footer>
