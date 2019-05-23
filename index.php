@@ -16,11 +16,11 @@
         <h1 class="title">福井県イベント情報サイト</h1>
     </div>
 </header>
-<div class="hero-img">
-    <div class="hero-mask">
-        <div class="hero-title"><h1>Welcome to Fukui</h1></div>
-    </div>
-</div>
+<!--<div class="hero-img">-->
+<!--    <div class="hero-mask">-->
+<!--        <div class="hero-title"><h1>Welcome to Fukui</h1></div>-->
+<!--    </div>-->
+<!--</div>-->
 <main>
     <div class="mc">
         <h2 class="article-title">イベント情報</h2>
@@ -47,6 +47,20 @@
                     width: 100%;
                     padding: .5em 1em;
                 }
+                .cp_ipselect {
+                    position: relative;
+                }
+                .cp_ipselect::before {
+                    font-weight: bold;
+                    z-index: 1;
+                    position: absolute;
+                    right: 12px;
+                    top: 0;
+                    content: "\f107";
+                    line-height: 37px;
+                    pointer-events: none;
+                    font-family: "Font Awesome 5 Free";
+                }
                 .cp_ipselect .cp_sl01 {
                     -webkit-appearance: none;
                     -moz-appearance: none;
@@ -56,22 +70,15 @@
                     border: 1px solid #bbbbbb;
                     border-radius: 2px;
                     background: #ffffff;
-                    padding: .5em 1em;
+                    padding: .5em 2em .5em 1em;
                     color: #666666;
-                }
-                .cp_ipselect .cp_sl01::before {
-                    /*position: absolute;*/
-                    content: "\f107";
-                    font-family: "FontAwesome";
-                    pointer-events: none;
-                    font-size: 1em;
                 }
             </style>
 
             <div style="text-align: center" class="count-box mt-5">
                 <h3 class="section-title">表示検索</h3>
-                <div class="cp_ipselect">
-                    <select name="showItems" id="showItems" class="cp_sl01">
+                <div class="">
+                    <select name="showItems" id="showItems" class="">
                         <option value="10">10件表示</option>
                         <option value="20">20件表示</option>
                         <option value="30">30件表示</option>
