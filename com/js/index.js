@@ -9,28 +9,21 @@ const eventList = document.querySelector('.events');
 const showItems = (items, end = items.length, flag = true) => {
     let events = '';
     items.map((item, i) => {
-        if(flag) if(i === 0) return;
+        if(flag && i === 0) return;
         if(i > end) return;
         events += `
-            <li>
-                <div>
-                    <p>${i}</p>
-                    <time>${item.start_date}</time>
-                    <p>${item.event_name}</p>
-                    <span>${item.category}</span>
-                    <p>${item.contact}</p>
-                </div>
+            <li class="event">
+                <h3 class="event-name">${item.event_name}</h3>
+                <span class="event-category mr-2">${item.category}</span>
+                <time class="event-date">${item.start_date} ~ ${item.end_date}</time>
+                <p class="event-place"><i class="fas fa-map-marker-alt mr-1"></i>${item.event_place}</p>
             </li>`;
     });
     return events;
 };
 //「もっと見る」を表示するかどうか
 const showMore = (arrayLength) => {
-    if(end < arrayLength) {
-        showButton.style.display = 'block';
-    } else {
-        showButton.style.display = 'none';
-    }
+    end < arrayLength ? showButton.style.display = 'block' : showButton.style.display = 'none';
 };
 //「もっと見る」がクリックされたとき
 const onClickMore = () => {
@@ -42,7 +35,7 @@ const onClickMore = () => {
         eventList.innerHTML = showItems(tmp, end);
         showMore(tmp.length);
     }
-    console.log(end);
+    // console.log(end);
 };
 
 
@@ -56,7 +49,7 @@ const changeShowNumber = () => {
         eventList.innerHTML = showItems(tmp, end);
         showMore(tmp.length);
     }
-    console.log(end);
+    // console.log(end);
 };
 
 
@@ -86,25 +79,24 @@ selectCategory.addEventListener('change', () => {
    newArray = tmp.filter((event) => {
        return event.category === value;
    });
-   console.log(newArray);
    //最初は10件表示createKeyword
    end = 9;
    eventList.innerHTML = showItems(newArray, end, false);
    showMore(newArray.length);
 });
 
-const showButton = document.querySelector('.show-more button');
+const showButton = document.querySelector('.show-more');
 showButton.addEventListener('click', onClickMore);
 
 const selectItem = document.querySelector('#showItems');
 selectItem.addEventListener('change', changeShowNumber);
 
-const keywordButton = document.querySelector('.keywordButton');
+// const keywordButton = document.querySelector('.keywordButton');
 let keywords = [];
 const createKeyword = (word) => {
     keywords = tmp.filter((item, index) => {
         if((item.event_name).indexOf(word) >= 0) return true;
-        if((item.contact).indexOf(word) >= 0) return true;
+        if((item.event_place).indexOf(word) >= 0) return true;
     });
     return keywords;
 };
@@ -115,10 +107,10 @@ const onClickKeywordButton = () => {
   end = array.length;
   eventList.innerHTML = showItems(array, end, false);
   showMore(array.length);
-  console.log(array);
+  // console.log(array);
 };
-keywordButton.addEventListener('click', createKeyword);
-keyword.addEventListener('change', onClickKeywordButton);
+// keywordButton.addEventListener('click', createKeyword);
+keyword.addEventListener('keyup', onClickKeywordButton);
 
 
 // jQuery
