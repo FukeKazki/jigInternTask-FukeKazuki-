@@ -1,0 +1,68 @@
+.title {
+	margin: 0;
+	//padding: 1em;
+	font-size: 1.5em;
+	color: #fff;
+    a {
+        color: #4d4d4d;
+    }
+}
+.page-title{
+	margin-top: 30px; 
+	padding: 0; 
+	text-align: center; 
+	font-size: 200%; 
+	font-weight: 600; 
+	line-height: 1.5;
+}
+.page-title-icon{}
+.page-title-sub{
+	margin: 0;
+	padding: 0;
+	text-align: center;
+	font-weight: 600; 
+	font-size: 108%; 
+	letter-spacing: 0.2em;
+}
+.article-title{
+	margin-top: 1em;
+	padding: 0;
+	text-align: center;
+	font-size: 180%;
+	font-weight: bold;
+	letter-spacing: .1em;
+}
+.article-title-sub{
+	margin: 0;
+	padding: 0;
+	text-align: center;
+	font-weight: 600; 
+	font-size: 108%; 
+	letter-spacing: 0.2em;
+}
+.article-title-icon{
+	margin-right: 0.5em;
+}
+.section-title{
+	margin: 0;
+	padding: 0;
+	text-align: center;
+	font-size: 1.5em;
+	font-weight: 200;
+	letter-spacing: .1em;
+}
+.section-title-sub{
+	margin: 0;
+	padding: 0;
+	padding-bottom: 5px;
+	text-align: center;
+	font-size: 1em;
+	font-weight: bold;
+}
+/*デコレーション*/
+.article-title{
+	width: 300px;
+	margin-right: auto;
+	margin-left: auto;
+	background: linear-gradient(transparent 95%, rgb(181, 245, 217) 95%);
+}

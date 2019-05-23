@@ -1,0 +1,21 @@
+.events {
+  li {
+    border-top: 1px dotted #4d4d4d;
+    padding: 1em 2em;
+    &:first-child {
+      border: none;
+    }
+  }
+}
+
+.event-name {
+  font-weight: bold;
+  font-size: 1.5em;
+}
+.event-category {
+  border: .5px solid #4d4d4d;
+  padding: .5em 1em;
+  -webkit-border-radius: 1em;
+  -moz-border-radius: 1em;
+  border-radius: 1em;
+}

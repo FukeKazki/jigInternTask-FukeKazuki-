@@ -4,8 +4,14 @@
 @import 'reset';
 @import 'mixins';
 @import 'setting';
+// layout
+@import 'layout/layout';
 // module
 @import 'module/header';
 @import 'module/main';
 @import 'module/footer';
 @import 'module/hero';
+@import 'module/button';
+@import 'module/events';
+// theme
+@import 'theme/text';
