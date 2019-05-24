@@ -52,28 +52,28 @@ body:「もっと見る」がクリックされたとき+10件を表示する
 in: なし
 out: なし
  */
-//キーワード検索で「もっと見る」がクリックされたときは検索結果の配列を使う
 const onClickMore = () => {
     let { displayCount } = getValue();
     displayCount += 10;
-    //ここ修正やな
-    createDisplayCount(displayCount, tmp.length);
     //表示件数一覧を変更の処理をここに書く
     if(isCategory) {
         eventList.innerHTML = showItems(newArray, displayCount, false);
+        createDisplayCount(displayCount, newArray.length);
         showMore(displayCount, newArray.length);
     } else if(isSearch) {
         eventList.innerHTML = showItems(searchResult, displayCount, false);
+        createDisplayCount(displayCount, searchResult.length);
         showMore(displayCount, searchResult.length);
     } else {
         eventList.innerHTML = showItems(tmp, displayCount);
+        createDisplayCount(displayCount, tmp.length);
         showMore(displayCount, tmp.length);
     }
+    console.log(displayCount);
 };
 
-//表示件数一覧を作成
 /*
-body: 表示件数のセレクトをセット
+body: 表示件数一覧の作成 表示件数のセレクトをセット
 in: 表示件数, 配列の長さ
 out: なし
  */
@@ -119,10 +119,13 @@ const showCategory = () => {
 };
 
 const selectCategory = document.querySelector('#selectCategory');
-//カテゴリを変更したとき
-selectCategory.addEventListener('change', () => {
+/*
+body: カテゴリを変更したときにその配列を作成する
+ */
+const changeCategory = () => {
     const {category, displayCount} = getValue();
-
+    keyword.value　= '';
+    isSearch = false;
     if(category === 'noSelect') {
         eventList.innerHTML = showItems(tmp, displayCount);
         isCategory = false;
@@ -134,7 +137,10 @@ selectCategory.addEventListener('change', () => {
     });
     eventList.innerHTML = showItems(newArray, displayCount, false);
     showMore(displayCount, newArray.length);
-});
+    createDisplayCount(displayCount, newArray.length);
+    console.log(displayCount);
+};
+selectCategory.addEventListener('change', changeCategory);
 
 const showButton = document.querySelector('.show-more');
 showButton.addEventListener('click', onClickMore);
@@ -155,22 +161,26 @@ const createKeyword = (word) => {
 };
 const keyword = document.querySelector('.keyword');
 
-const keyupKeywordButton = () => {
+keyword.addEventListener('keyup', () => {
+    selectCategory.value = 'noSelect';
+    isCategory = false;
     const findWord = keyword.value;
     const { displayCount } = getValue();
     if(findWord === '') {
         isSearch = false;
         eventList.innerHTML = showItems(tmp, displayCount);
         showMore(displayCount, tmp.length);
+        createDisplayCount(displayCount, tmp.length);
     } else {
         isSearch = true;
         searchResult = createKeyword(findWord);
         eventList.innerHTML = showItems(searchResult, displayCount, false);
         showMore(displayCount, searchResult.length);
+        createDisplayCount(displayCount, searchResult.length);
+        console.log(searchResult.length);
     }
-};
-// keywordButton.addEventListener('click', createKeyword);
-keyword.addEventListener('keyup', keyupKeywordButton);
+});
+
 
 
 // jQuery
