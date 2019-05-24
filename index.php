@@ -87,10 +87,6 @@
                 <h3 class="section-title">表示件数</h3>
                 <div class="cp_ipselect" style="margin-left: auto; margin-right: auto; width: 100px;">
                     <select name="showItems" id="showItems" class="cp_sl01">
-                        <option value="10">10件表示</option>
-                        <option value="20">20件表示</option>
-                        <option value="30">30件表示</option>
-                        <option value="9999">全件表示</option>
                     </select>
                 </div>
             </div>
@@ -98,7 +94,7 @@
             <div class="bottom">
                 <div style="text-align: center" class="search-box mt-5 mr-5">
                     <h3 class="section-title">Keyword</h3>
-                    <input type="text" value="キーワード" class="keyword">
+                    <input type="text" value="" class="keyword">
                 </div>
 
                 <div style="text-align: center;" class="category-box mt-5">

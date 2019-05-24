@@ -1,26 +1,32 @@
 'use strict';
-let end = 10;
 let tmp = [];
 let isCategory = false;
+let isSearch = false;
 let categorys = [];
 let newArray = [];
+let searchResult = [];
 const eventList = document.querySelector('.events');
 
-//表示件数とカテゴリを取得する
+/*
+body: 表示件数とカテゴリを取得する
+in: なし
+out: カテゴリの値, 選択されている表示件数
+ */
 const getValue = () => {
-    //カテゴリの値を取得
     const category = selectCategory.value;
-    //選択している表示件数の取得
     const displayCount = Number(selectItem.value);
-    //取得するときは分割代入
     return {category, displayCount};
 };
-//表示件数までエレメントの生成をする
-const showItems = (items, end = items.length, flag = true) => {
+/*
+body: 表示件数までエレメントの生成をする
+in: 表示する配列, 表示件数, カテゴリ一覧かどうか
+out: HTMLエレメント
+ */
+const showItems = (items, displayCount, flag = true) => {
     let events = '';
     items.map((item, i) => {
         if(flag && i === 0) return;
-        if(i > end) return;
+        if(i > displayCount) return;
         events += `
             <li class="event">
                 <h3 class="event-name">${item.event_name}</h3>
@@ -31,35 +37,71 @@ const showItems = (items, end = items.length, flag = true) => {
     });
     return events;
 };
-//「もっと見る」を表示するかどうか
-const showMore = (arrayLength) => {
-    end < arrayLength ? showButton.style.display = 'block' : showButton.style.display = 'none';
-};
-//「もっと見る」がクリックされたとき
-const onClickMore = () => {
-    end += 10;
-    if(isCategory) {
-        eventList.innerHTML = showItems(newArray, end, false);
-        showMore(newArray.length);
-    } else {
-        eventList.innerHTML = showItems(tmp, end);
-        showMore(tmp.length);
-    }
-    // console.log(end);
+
+/*
+body: もっと見る」を表示するかどうか
+in: 表示件数, 配列の長さ
+out: なし
+ */
+const showMore = (displayCount, arrayLength) => {
+    displayCount < arrayLength ? showButton.style.display = 'block' : showButton.style.display = 'none';
 };
 
+/*
+body:「もっと見る」がクリックされたとき+10件を表示する
+in: なし
+out: なし
+ */
+//キーワード検索で「もっと見る」がクリックされたときは検索結果の配列を使う
+const onClickMore = () => {
+    let { displayCount } = getValue();
+    displayCount += 10;
+    //ここ修正やな
+    createDisplayCount(displayCount, tmp.length);
+    //表示件数一覧を変更の処理をここに書く
+    if(isCategory) {
+        eventList.innerHTML = showItems(newArray, displayCount, false);
+        showMore(displayCount, newArray.length);
+    } else if(isSearch) {
+        eventList.innerHTML = showItems(searchResult, displayCount, false);
+        showMore(displayCount, searchResult.length);
+    } else {
+        eventList.innerHTML = showItems(tmp, displayCount);
+        showMore(displayCount, tmp.length);
+    }
+};
+
+//表示件数一覧を作成
+/*
+body: 表示件数のセレクトをセット
+in: 表示件数, 配列の長さ
+out: なし
+ */
+const createDisplayCount = (displayCount, length) => {
+    let element = '';
+    for(let i = 0; i < length; i+=10) {
+        if(displayCount === i+10){
+            element += `<option value="${i+10}" selected>${i+10}件表示</option>`;
+        } else {
+            element += `<option value="${i+10}">${i+10}件表示</option>`;
+        }
+    }
+    document.querySelector('#showItems').innerHTML = element;
+};
 
 //表示件数が変更されたとき
 const changeShowNumber = () => {
-    end = Number(selectItem.value);
+    let { displayCount } = getValue();
     if(isCategory) {
-        eventList.innerHTML = showItems(newArray, end, false);
-        showMore(end);
+        eventList.innerHTML = showItems(newArray, displayCount, false);
+        showMore(displayCount, newArray.length);
+    } else if(isSearch) {
+        eventList.innerHTML = showItems(searchResult, displayCount, false);
+        showMore(displayCount, searchResult.length);
     } else {
-        eventList.innerHTML = showItems(tmp, end);
-        showMore(tmp.length);
+        eventList.innerHTML = showItems(tmp, displayCount);
+        showMore(displayCount, tmp.length);
     }
-    // console.log(end);
 };
 
 
@@ -82,7 +124,6 @@ selectCategory.addEventListener('change', () => {
     const {category, displayCount} = getValue();
 
     if(category === 'noSelect') {
-        // eventList.innerHTML = showItems(tmp, end);
         eventList.innerHTML = showItems(tmp, displayCount);
         isCategory = false;
         return;
@@ -91,11 +132,8 @@ selectCategory.addEventListener('change', () => {
     newArray = tmp.filter((event) => {
         return event.category === category;
     });
-    //最初は10件表示createKeyword
-    // end = 9;
-    end = displayCount;
     eventList.innerHTML = showItems(newArray, displayCount, false);
-    showMore(newArray.length);
+    showMore(displayCount, newArray.length);
 });
 
 const showButton = document.querySelector('.show-more');
@@ -104,24 +142,32 @@ showButton.addEventListener('click', onClickMore);
 const selectItem = document.querySelector('#showItems');
 selectItem.addEventListener('change', changeShowNumber);
 
-// const keywordButton = document.querySelector('.keywordButton');
-let keywords = [];
+/*
+body: 検索する
+in: 検索ワード
+out: 検索結果の配列
+ */
 const createKeyword = (word) => {
-    keywords = tmp.filter((item, index) => {
+    return tmp.filter((item) => {
         if((item.event_name).indexOf(word) >= 0) return true;
         if((item.event_place).indexOf(word) >= 0) return true;
     });
-    return keywords;
 };
 const keyword = document.querySelector('.keyword');
+
 const keyupKeywordButton = () => {
     const findWord = keyword.value;
-    const {category, displayCount} = getValue();
-    let array = createKeyword(findWord);
-    end = array.length;
-    eventList.innerHTML = showItems(array, end, false);
-    showMore(array.length);
-    // console.log(array);
+    const { displayCount } = getValue();
+    if(findWord === '') {
+        isSearch = false;
+        eventList.innerHTML = showItems(tmp, displayCount);
+        showMore(displayCount, tmp.length);
+    } else {
+        isSearch = true;
+        searchResult = createKeyword(findWord);
+        eventList.innerHTML = showItems(searchResult, displayCount, false);
+        showMore(displayCount, searchResult.length);
+    }
 };
 // keywordButton.addEventListener('click', createKeyword);
 keyword.addEventListener('keyup', keyupKeywordButton);
@@ -147,9 +193,11 @@ $(function(){
     const JSON_URL = 'https://raw.githubusercontent.com/jigjp/intern_exam/master/fukui_event.json';
     $.getJSON(JSON_URL, datas => {
         tmp = datas;
-        document.querySelector('.events').innerHTML = showItems(datas, end);
+        createDisplayCount(10, datas.length);
+        const { displayCount } = getValue();
+        document.querySelector('.events').innerHTML = showItems(datas, displayCount);
         console.log(tmp);
-        showMore(datas.length);
+        showMore(displayCount, datas.length);
         //カテゴリの取得
         datas.map(data => {
             categorys.push(data.category);
