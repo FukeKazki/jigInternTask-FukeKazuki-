@@ -5,6 +5,16 @@ let isCategory = false;
 let categorys = [];
 let newArray = [];
 const eventList = document.querySelector('.events');
+
+//表示件数とカテゴリを取得する
+const getValue = () => {
+    //カテゴリの値を取得
+    const category = selectCategory.value;
+    //選択している表示件数の取得
+    const displayCount = Number(selectItem.value);
+    //取得するときは分割代入
+    return {category, displayCount};
+};
 //表示件数までエレメントの生成をする
 const showItems = (items, end = items.length, flag = true) => {
     let events = '';
@@ -69,20 +79,23 @@ const showCategory = () => {
 const selectCategory = document.querySelector('#selectCategory');
 //カテゴリを変更したとき
 selectCategory.addEventListener('change', () => {
-   const value = selectCategory.value;
-   if(value === 'noSelect') {
-       eventList.innerHTML = showItems(tmp, end);
-       isCategory = false;
-       return;
-   }
-   isCategory = true;
-   newArray = tmp.filter((event) => {
-       return event.category === value;
-   });
-   //最初は10件表示createKeyword
-   end = 9;
-   eventList.innerHTML = showItems(newArray, end, false);
-   showMore(newArray.length);
+    const {category, displayCount} = getValue();
+
+    if(category === 'noSelect') {
+        // eventList.innerHTML = showItems(tmp, end);
+        eventList.innerHTML = showItems(tmp, displayCount);
+        isCategory = false;
+        return;
+    }
+    isCategory = true;
+    newArray = tmp.filter((event) => {
+        return event.category === category;
+    });
+    //最初は10件表示createKeyword
+    // end = 9;
+    end = displayCount;
+    eventList.innerHTML = showItems(newArray, displayCount, false);
+    showMore(newArray.length);
 });
 
 const showButton = document.querySelector('.show-more');
@@ -101,46 +114,47 @@ const createKeyword = (word) => {
     return keywords;
 };
 const keyword = document.querySelector('.keyword');
-const onClickKeywordButton = () => {
-  const findWord = keyword.value;
-  let array = createKeyword(findWord);
-  end = array.length;
-  eventList.innerHTML = showItems(array, end, false);
-  showMore(array.length);
-  // console.log(array);
+const keyupKeywordButton = () => {
+    const findWord = keyword.value;
+    const {category, displayCount} = getValue();
+    let array = createKeyword(findWord);
+    end = array.length;
+    eventList.innerHTML = showItems(array, end, false);
+    showMore(array.length);
+    // console.log(array);
 };
 // keywordButton.addEventListener('click', createKeyword);
-keyword.addEventListener('keyup', onClickKeywordButton);
+keyword.addEventListener('keyup', keyupKeywordButton);
 
 
 // jQuery
 $(function(){
-   'use strict';
-   $('.hero-img').vegas({
-      slides: [
-         {src: './com/img/vegas1.jpg'},
-         {src: './com/img/vegas2.jpg'},
-         {src: './com/img/vegas3.jpg'},
-         {src: './com/img/vegas4.jpg'},
-      ],
-      delay: 5000,
-      transitionDuration: 3000,
-      transition: 'blur',
-      animation: 'random',
-   });
+    'use strict';
+    $('.hero-img').vegas({
+        slides: [
+            {src: './com/img/vegas1.jpg'},
+            {src: './com/img/vegas2.jpg'},
+            {src: './com/img/vegas3.jpg'},
+            {src: './com/img/vegas4.jpg'},
+        ],
+        delay: 5000,
+        transitionDuration: 3000,
+        transition: 'blur',
+        animation: 'random',
+    });
 
-   //jsonの取得
-   const JSON_URL = 'https://raw.githubusercontent.com/jigjp/intern_exam/master/fukui_event.json';
-   $.getJSON(JSON_URL, datas => {
-      tmp = datas;
-      document.querySelector('.events').innerHTML = showItems(datas, end);
-      console.log(tmp);
-      showMore(datas.length);
-      //カテゴリの取得
-      datas.map(data => {
-          categorys.push(data.category);
-      });
-      categorys = categorys.filter((x, i, self) => self.indexOf(x) === i);
-      selectCategory.innerHTML = showCategory();
-   });
+    //jsonの取得
+    const JSON_URL = 'https://raw.githubusercontent.com/jigjp/intern_exam/master/fukui_event.json';
+    $.getJSON(JSON_URL, datas => {
+        tmp = datas;
+        document.querySelector('.events').innerHTML = showItems(datas, end);
+        console.log(tmp);
+        showMore(datas.length);
+        //カテゴリの取得
+        datas.map(data => {
+            categorys.push(data.category);
+        });
+        categorys = categorys.filter((x, i, self) => self.indexOf(x) === i);
+        selectCategory.innerHTML = showCategory();
+    });
 });
