@@ -36,6 +36,14 @@
                     border-radius: 1em;
                     padding: 1em 2em;
                 }
+                .search-box input {
+                    color: #666666;
+                }
+                .count-box {
+                    width: 50%;
+                    margin-left: auto;
+                    margin-right: auto;
+                }
                 .forms .bottom {
                     display: flex;
                     justify-content: center;
@@ -76,9 +84,9 @@
             </style>
 
             <div style="text-align: center" class="count-box mt-5">
-                <h3 class="section-title">表示検索</h3>
-                <div class="">
-                    <select name="showItems" id="showItems" class="">
+                <h3 class="section-title">表示件数</h3>
+                <div class="cp_ipselect" style="margin-left: auto; margin-right: auto; width: 100px;">
+                    <select name="showItems" id="showItems" class="cp_sl01">
                         <option value="10">10件表示</option>
                         <option value="20">20件表示</option>
                         <option value="30">30件表示</option>
