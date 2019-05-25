@@ -1,11 +1,11 @@
 'use strict';
-let tmp = [];
+let eventList = [];
 let isCategory = false;
 let isSearch = false;
-let categorys = [];
-let newArray = [];
+let categoryList = [];
+let categoryArray = [];
 let searchResult = [];
-const eventList = document.querySelector('.events');
+const eventArea = document.querySelector('.events');
 
 /*
 body: 表示件数とカテゴリを取得する
@@ -20,7 +20,7 @@ const getValue = () => {
 /*
 body: 表示件数までエレメントの生成をする
 in: 表示する配列, 表示件数, カテゴリ一覧かどうか
-out: HTMLエレメント
+out: エレメント
  */
 const showItems = (items, displayCount, flag = true) => {
     let events = '';
@@ -30,9 +30,41 @@ const showItems = (items, displayCount, flag = true) => {
         events += `
             <li class="event">
                 <h3 class="event-name">${item.event_name}</h3>
+                <p class="event-description" style="padding: 0 2em 1em 2em;">${item.description}</p>
                 <span class="event-category mr-2">${item.category}</span>
                 <time class="event-date">${item.start_date} ~ ${item.end_date}</time>
-                <p class="event-place"><i class="fas fa-map-marker-alt mr-1"></i>${item.event_place}</p>
+                <table class="mt-2">
+                    <tbody>
+                        <tr>
+                            <th><i class="far fa-file-alt mr-1"></i>概要</th>
+                            <td>
+                                <p class="event-remarks">${item.remarks}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><i class="fas fa-map-marker-alt mr-1"></i>会場</th>
+                            <td>
+                                <p class="event-place">${item.event_place}</p>
+                                <p class="event-address">${item.address}</p> 
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><i class="fas fa-car mr-1"></i>交通</th>
+                            <td>
+                                <p class="event-transportation">${item.transportation}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><i class="fas fa-phone mr-1"></i>お問い合わせ</th>
+                            <td>
+                                <p class="event-contact">${item.contact}</p>
+                                <p class="event-contact-phone-number">${item.contact_phone_number}</p>
+                                <p class="event-mail-address">${item.mail_address}</p>
+                                <p class="event-place-url"><a href="${item.event_place_url}" target="_blank">${item.event_place_url}</a></p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </li>`;
     });
     return events;
@@ -55,21 +87,19 @@ out: なし
 const onClickMore = () => {
     let { displayCount } = getValue();
     displayCount += 10;
-    //表示件数一覧を変更の処理をここに書く
     if(isCategory) {
-        eventList.innerHTML = showItems(newArray, displayCount, false);
-        createDisplayCount(displayCount, newArray.length);
-        showMore(displayCount, newArray.length);
+        eventArea.innerHTML = showItems(categoryArray, displayCount, false);
+        createDisplayCount(displayCount, categoryArray.length);
+        showMore(displayCount, categoryArray.length);
     } else if(isSearch) {
-        eventList.innerHTML = showItems(searchResult, displayCount, false);
+        eventArea.innerHTML = showItems(searchResult, displayCount, false);
         createDisplayCount(displayCount, searchResult.length);
         showMore(displayCount, searchResult.length);
     } else {
-        eventList.innerHTML = showItems(tmp, displayCount);
-        createDisplayCount(displayCount, tmp.length);
-        showMore(displayCount, tmp.length);
+        eventArea.innerHTML = showItems(eventList, displayCount);
+        createDisplayCount(displayCount, eventList.length);
+        showMore(displayCount, eventList.length);
     }
-    console.log(displayCount);
 };
 
 /*
@@ -93,14 +123,14 @@ const createDisplayCount = (displayCount, length) => {
 const changeShowNumber = () => {
     let { displayCount } = getValue();
     if(isCategory) {
-        eventList.innerHTML = showItems(newArray, displayCount, false);
-        showMore(displayCount, newArray.length);
+        eventArea.innerHTML = showItems(categoryArray, displayCount, false);
+        showMore(displayCount, categoryArray.length);
     } else if(isSearch) {
-        eventList.innerHTML = showItems(searchResult, displayCount, false);
+        eventArea.innerHTML = showItems(searchResult, displayCount, false);
         showMore(displayCount, searchResult.length);
     } else {
-        eventList.innerHTML = showItems(tmp, displayCount);
-        showMore(displayCount, tmp.length);
+        eventArea.innerHTML = showItems(eventList, displayCount);
+        showMore(displayCount, eventList.length);
     }
 };
 
@@ -108,7 +138,7 @@ const changeShowNumber = () => {
 //カテゴリ一覧の作成
 const showCategory = () => {
     let element = '';
-    categorys.map((category, i) => {
+    categoryList.map((category, i) => {
         if(i === 0) {
             element += `<option value="noSelect">全てのカテゴリ</option>`;
             return;
@@ -127,18 +157,18 @@ const changeCategory = () => {
     keyword.value　= '';
     isSearch = false;
     if(category === 'noSelect') {
-        eventList.innerHTML = showItems(tmp, displayCount);
+        eventArea.innerHTML = showItems(eventList, displayCount);
+        createDisplayCount(displayCount, eventList.length);
         isCategory = false;
         return;
     }
     isCategory = true;
-    newArray = tmp.filter((event) => {
+    categoryArray = eventList.filter((event) => {
         return event.category === category;
     });
-    eventList.innerHTML = showItems(newArray, displayCount, false);
-    showMore(displayCount, newArray.length);
-    createDisplayCount(displayCount, newArray.length);
-    console.log(displayCount);
+    eventArea.innerHTML = showItems(categoryArray, displayCount, false);
+    showMore(displayCount, categoryArray.length);
+    createDisplayCount(displayCount, categoryArray.length);
 };
 selectCategory.addEventListener('change', changeCategory);
 
@@ -154,7 +184,7 @@ in: 検索ワード
 out: 検索結果の配列
  */
 const createKeyword = (word) => {
-    return tmp.filter((item) => {
+    return eventList.filter((item) => {
         if((item.event_name).indexOf(word) >= 0) return true;
         if((item.event_place).indexOf(word) >= 0) return true;
     });
@@ -168,19 +198,17 @@ keyword.addEventListener('keyup', () => {
     const { displayCount } = getValue();
     if(findWord === '') {
         isSearch = false;
-        eventList.innerHTML = showItems(tmp, displayCount);
-        showMore(displayCount, tmp.length);
-        createDisplayCount(displayCount, tmp.length);
+        eventArea.innerHTML = showItems(eventList, displayCount);
+        showMore(displayCount, eventList.length);
+        createDisplayCount(displayCount, eventList.length);
     } else {
         isSearch = true;
         searchResult = createKeyword(findWord);
-        eventList.innerHTML = showItems(searchResult, displayCount, false);
+        eventArea.innerHTML = showItems(searchResult, displayCount, false);
         showMore(displayCount, searchResult.length);
         createDisplayCount(displayCount, searchResult.length);
-        console.log(searchResult.length);
     }
 });
-
 
 
 // jQuery
@@ -201,18 +229,17 @@ $(function(){
 
     //jsonの取得
     const JSON_URL = 'https://raw.githubusercontent.com/jigjp/intern_exam/master/fukui_event.json';
-    $.getJSON(JSON_URL, datas => {
-        tmp = datas;
-        createDisplayCount(10, datas.length);
+    $.getJSON(JSON_URL, data => {
+        eventList = data;
+        createDisplayCount(10, data.length);
         const { displayCount } = getValue();
-        document.querySelector('.events').innerHTML = showItems(datas, displayCount);
-        console.log(tmp);
-        showMore(displayCount, datas.length);
+        document.querySelector('.events').innerHTML = showItems(data, displayCount);
+        showMore(displayCount, data.length);
         //カテゴリの取得
-        datas.map(data => {
-            categorys.push(data.category);
+        data.map(x => {
+            categoryList.push(x.category);
         });
-        categorys = categorys.filter((x, i, self) => self.indexOf(x) === i);
+        categoryList = categoryList.filter((x, i, self) => self.indexOf(x) === i);
         selectCategory.innerHTML = showCategory();
     });
 });

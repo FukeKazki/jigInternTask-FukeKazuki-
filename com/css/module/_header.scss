@@ -1,8 +1,11 @@
 header {
-  background: pink;
+  background: rgb(32, 95, 177);
 }
 .hc {
   width: $width-container-pc;
   margin: 0 auto;
   padding: 1em 2em;
+  @include max-screen($breakpoint-sm) {
+    width: $width-container-sm;
+  }
 }

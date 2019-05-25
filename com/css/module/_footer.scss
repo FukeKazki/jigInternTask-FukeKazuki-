@@ -4,5 +4,9 @@ footer {
 .fc {
   width: $width-container-pc;
   margin: 0 auto;
-  padding: 1em 2em;
+  padding: 2em 4em;
+  color: #fff;
+  @include max-screen($breakpoint-sm) {
+    width: $width-container-sm;
+  }
 }

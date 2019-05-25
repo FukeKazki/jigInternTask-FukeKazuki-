@@ -1,5 +1,5 @@
 // font
-// Todo: googleFontを追加
+@import url('https://fonts.googleapis.com/css?family=M+PLUS+1p&display=swap');
 // setting
 @import 'reset';
 @import 'mixins';
@@ -13,5 +13,7 @@
 @import 'module/hero';
 @import 'module/button';
 @import 'module/events';
+@import 'module/form';
 // theme
 @import 'theme/text';
+@import 'theme/theme';

@@ -19,3 +19,22 @@
   -moz-border-radius: 1em;
   border-radius: 1em;
 }
+table, tr, th, td {border: 1px solid #4d4d4d; padding: 1em 2em;}
+
+
+table {
+  margin: 0 auto;
+  th {
+    @include min-screen($breakpoint-pc) {
+      min-width: 200px;
+    }
+    @include max-screen($breakpoint-sm) {
+      max-width: 200px;
+    }
+  }
+  td {
+    @include max-screen($breakpoint-sm) {
+      max-width: 200px;
+    }
+  }
+}
