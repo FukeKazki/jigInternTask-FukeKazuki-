@@ -3,24 +3,25 @@ let eventList = [];
 let isCategory = false;
 let isSearch = false;
 let categoryList = [];
-let categoryArray = [];
+let categorizedArray = [];
 let searchResult = [];
 const eventArea = document.querySelector('.events');
 
-/*
-body: 表示件数とカテゴリを取得する
-in: なし
-out: カテゴリの値, 選択されている表示件数
+/**
+ * 表示件数とカテゴリを取得する
+ * @return {Object} category displayCount カテゴリの値 表示件数
  */
 const getValue = () => {
     const category = selectCategory.value;
     const displayCount = Number(selectItem.value);
     return {category, displayCount};
 };
-/*
-body: 表示件数までエレメントの生成をする
-in: 表示する配列, 表示件数, カテゴリ一覧かどうか
-out: エレメント
+/**
+ * 表示件数までのエレメントを生成する
+ * @param {Array} items 配列
+ * @param {Number} displayCount 表示件数
+ * @param {Boolean} flag 忘れた
+ * @return {String} events エレメント
  */
 const showItems = (items, displayCount, flag = true) => {
     let events = '';
@@ -70,27 +71,25 @@ const showItems = (items, displayCount, flag = true) => {
     return events;
 };
 
-/*
-body: もっと見る」を表示するかどうか
-in: 表示件数, 配列の長さ
-out: なし
+/**
+ *「もっと見る」を表示させるかどうか
+ * @param {Number} displayCount 表示件数
+ * @param {Number} arrayLength 配列の長さ
  */
 const showMore = (displayCount, arrayLength) => {
     displayCount < arrayLength ? showButton.style.display = 'block' : showButton.style.display = 'none';
 };
 
-/*
-body:「もっと見る」がクリックされたとき+10件を表示する
-in: なし
-out: なし
+/**
+ *「もっと見る」がクリックされたときに+10件を表示する
  */
 const onClickMore = () => {
     let { displayCount } = getValue();
     displayCount += 10;
     if(isCategory) {
-        eventArea.innerHTML = showItems(categoryArray, displayCount, false);
-        createDisplayCount(displayCount, categoryArray.length);
-        showMore(displayCount, categoryArray.length);
+        eventArea.innerHTML = showItems(categorizedArray, displayCount, false);
+        createDisplayCount(displayCount, categorizedArray.length);
+        showMore(displayCount, categorizedArray.length);
     } else if(isSearch) {
         eventArea.innerHTML = showItems(searchResult, displayCount, false);
         createDisplayCount(displayCount, searchResult.length);
@@ -102,10 +101,10 @@ const onClickMore = () => {
     }
 };
 
-/*
-body: 表示件数一覧の作成 表示件数のセレクトをセット
-in: 表示件数, 配列の長さ
-out: なし
+/**
+ * 表示件数一覧の作成
+ * @param {Number} displayCount 表示件数
+ * @param {Number} length 配列の長さ
  */
 const createDisplayCount = (displayCount, length) => {
     let element = '';
@@ -118,13 +117,14 @@ const createDisplayCount = (displayCount, length) => {
     }
     document.querySelector('#showItems').innerHTML = element;
 };
-
-//表示件数が変更されたとき
+/**
+ * 表示件数が変更された時に関数群を実行
+ */
 const changeShowNumber = () => {
     let { displayCount } = getValue();
     if(isCategory) {
-        eventArea.innerHTML = showItems(categoryArray, displayCount, false);
-        showMore(displayCount, categoryArray.length);
+        eventArea.innerHTML = showItems(categorizedArray, displayCount, false);
+        showMore(displayCount, categorizedArray.length);
     } else if(isSearch) {
         eventArea.innerHTML = showItems(searchResult, displayCount, false);
         showMore(displayCount, searchResult.length);
@@ -135,7 +135,10 @@ const changeShowNumber = () => {
 };
 
 
-//カテゴリ一覧の作成
+/**
+ * カテゴリ一覧の作成
+ * @returns {string}
+ */
 const showCategory = () => {
     let element = '';
     categoryList.map((category, i) => {
@@ -163,12 +166,12 @@ const changeCategory = () => {
         return;
     }
     isCategory = true;
-    categoryArray = eventList.filter((event) => {
+    categorizedArray = eventList.filter((event) => {
         return event.category === category;
     });
-    eventArea.innerHTML = showItems(categoryArray, displayCount, false);
-    showMore(displayCount, categoryArray.length);
-    createDisplayCount(displayCount, categoryArray.length);
+    eventArea.innerHTML = showItems(categorizedArray, displayCount, false);
+    showMore(displayCount, categorizedArray.length);
+    createDisplayCount(displayCount, categorizedArray.length);
 };
 selectCategory.addEventListener('change', changeCategory);
 
@@ -178,10 +181,10 @@ showButton.addEventListener('click', onClickMore);
 const selectItem = document.querySelector('#showItems');
 selectItem.addEventListener('change', changeShowNumber);
 
-/*
-body: 検索する
-in: 検索ワード
-out: 検索結果の配列
+/**
+ * 検索をする
+ * @param {String} word 検索ワード
+ * @return {Array} 検索結果
  */
 const createKeyword = (word) => {
     return eventList.filter((item) => {
