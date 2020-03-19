@@ -1,5 +1,14 @@
-# jigインターン課題選考
-[福井県のイベント情報を表示するWebページ](https://fukekazki.github.io/jigInternTask-FukeKazuki-/)
+# 福井県イベント情報サイト
+
+<p align='center'>
+    <img src='./images/screenshot.png' />
+</p>
+
+<p align='center'>URL: https://fukekazki.github.io/jigInternTask-FukeKazuki-/</p>
+
+## Description
+福井県のイベント情報サイトです.  
+jig.jpのインターンの課題で作成しました.  
 
 ## 開発環境
 ### 言語
@@ -20,10 +29,3 @@
 - **「もっと見る」で続きを表示**
 - **カテゴリでの絞り込み**
 - **キーワード検索(イベント名, 開催地)**
-
-## あとがき
-Ajax以外は素JSで実装した。<br>
-本当はVue.jsを使いたかった(テスト直前なので新たに勉強する余裕がなかった)。<br>
-JavaScriptコードレシピ集にめっちゃお世話になった。<br>
-vegasは実装したあとにダサいことに気づきコメントアウトした。<br>
-###### 富家和樹
